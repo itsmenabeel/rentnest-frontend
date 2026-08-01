@@ -3,6 +3,8 @@ import { DashboardNav } from "@/components/layout/dashboard-nav"
 const navItems = [
   { href: "/dashboard/admin", label: "Overview" },
   { href: "/dashboard/admin/users", label: "Users" },
+  { href: "/dashboard/admin/properties", label: "Properties" },
+  { href: "/dashboard/admin/rentals", label: "Rentals" },
 ]
 
 export default function AdminDashboardLayout({
