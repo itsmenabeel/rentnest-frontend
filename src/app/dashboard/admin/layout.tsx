@@ -5,6 +5,7 @@ const navItems = [
   { href: "/dashboard/admin/users", label: "Users" },
   { href: "/dashboard/admin/properties", label: "Properties" },
   { href: "/dashboard/admin/rentals", label: "Rentals" },
+  { href: "/dashboard/admin/categories", label: "Categories" },
 ]
 
 export default function AdminDashboardLayout({
