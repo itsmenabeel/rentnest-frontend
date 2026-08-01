@@ -7,6 +7,7 @@ import { ApiRequestError } from "@/lib/api/client"
 import { getRentalServer } from "@/lib/api/rentals.server"
 import { formatDate } from "@/lib/utils/format-date"
 import { formatPrice } from "@/lib/utils/currency"
+import { Button } from "@/components/ui/button"
 import { PropertyImage } from "@/components/properties/property-image"
 import { RentalStatusBadge } from "@/components/rentals/rental-status-badge"
 
@@ -108,9 +109,19 @@ export default async function TenantRequestDetailPage({
         </div>
       )}
 
-      {rental.status === "APPROVED" && !rental.payment && (
-        <div className="rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
-          Approved. Online payment is coming soon.
+      {rental.status === "APPROVED" && (
+        <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+          <span>
+            {rental.payment?.status === "PENDING"
+              ? "Payment in progress."
+              : "Approved. Pay to activate your rental."}
+          </span>
+          <Button
+            size="sm"
+            render={<Link href={`/dashboard/tenant/requests/${rental.id}/pay`} />}
+          >
+            {rental.payment?.status === "PENDING" ? "Continue payment" : "Pay now"}
+          </Button>
         </div>
       )}
 
