@@ -1,7 +1,6 @@
-import Link from "next/link"
 import { SearchX } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
@@ -17,9 +16,9 @@ export default function NotFound() {
           This rental request doesn&apos;t exist or isn&apos;t yours to view.
         </p>
       </div>
-      <Button render={<Link href="/dashboard/tenant/requests" />}>
+      <ButtonLink href="/dashboard/tenant/requests">
         Back to my requests
-      </Button>
+      </ButtonLink>
     </div>
   )
 }

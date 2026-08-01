@@ -8,7 +8,7 @@ import { getRentalServer } from "@/lib/api/rentals.server"
 import { formatDate } from "@/lib/utils/format-date"
 import { formatPrice } from "@/lib/utils/currency"
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { PropertyImage } from "@/components/properties/property-image"
 import { RentalStatusBadge } from "@/components/rentals/rental-status-badge"
 import { ReviewForm } from "@/components/reviews/review-form"
@@ -118,12 +118,12 @@ export default async function TenantRequestDetailPage({
               ? "Payment in progress."
               : "Approved. Pay to activate your rental."}
           </span>
-          <Button
+          <ButtonLink
             size="sm"
-            render={<Link href={`/dashboard/tenant/requests/${rental.id}/pay`} />}
+            href={`/dashboard/tenant/requests/${rental.id}/pay`}
           >
             {rental.payment?.status === "PENDING" ? "Continue payment" : "Pay now"}
-          </Button>
+          </ButtonLink>
         </div>
       )}
 

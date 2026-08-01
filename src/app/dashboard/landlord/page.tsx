@@ -6,7 +6,7 @@ import { getLandlordPropertiesServer } from "@/lib/api/landlord-properties.serve
 import { getLandlordRequestsServer } from "@/lib/api/landlord-rentals.server"
 import { EmptyState } from "@/components/common/empty-state"
 import { StatCard } from "@/components/common/stat-card"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { LandlordPropertyRow } from "@/components/properties/landlord-property-row"
 import { LandlordRequestSummaryRow } from "@/components/rentals/landlord-request-summary-row"
 
@@ -63,9 +63,9 @@ export default async function LandlordDashboardPage() {
             title="No listings yet"
             description="Create your first listing to start receiving requests."
             action={
-              <Button render={<Link href="/dashboard/landlord/properties/new" />}>
+              <ButtonLink href="/dashboard/landlord/properties/new">
                 Add property
-              </Button>
+              </ButtonLink>
             }
           />
         ) : (

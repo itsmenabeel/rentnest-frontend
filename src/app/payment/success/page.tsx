@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { CheckCircle2 } from "lucide-react"
 
 import { getRentalServer } from "@/lib/api/rentals.server"
 import { formatDate } from "@/lib/utils/format-date"
 import { formatPrice } from "@/lib/utils/currency"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "Payment successful | RentNest",
@@ -66,20 +65,16 @@ export default async function PaymentSuccessPage({
         </div>
       )}
 
-      <Button
-        render={
-          <Link
-            href={
-              rentalId
-                ? `/dashboard/tenant/requests/${rentalId}`
-                : "/dashboard/tenant/requests"
-            }
-          />
+      <ButtonLink
+        href={
+          rentalId
+            ? `/dashboard/tenant/requests/${rentalId}`
+            : "/dashboard/tenant/requests"
         }
         className="w-full"
       >
         View request
-      </Button>
+      </ButtonLink>
     </div>
   )
 }

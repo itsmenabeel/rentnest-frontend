@@ -8,7 +8,7 @@ import { clearToken } from "@/lib/auth/cookie"
 import { useAuthStore } from "@/lib/stores/auth-store"
 import { showSuccess } from "@/lib/utils/toast"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonLink } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,7 +42,7 @@ export function UserMenu() {
         >
           Log in
         </Link>
-        <Button render={<Link href="/auth/register" />}>Sign up</Button>
+        <ButtonLink href="/auth/register">Sign up</ButtonLink>
       </>
     )
   }

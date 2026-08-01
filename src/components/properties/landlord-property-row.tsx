@@ -1,10 +1,9 @@
-import Link from "next/link"
 import { MapPin, Pencil } from "lucide-react"
 
 import type { Property } from "@/lib/types/models"
 import { formatPrice } from "@/lib/utils/currency"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { DeletePropertyButton } from "@/components/properties/delete-property-button"
 import { PropertyImage } from "@/components/properties/property-image"
 
@@ -40,14 +39,14 @@ export function LandlordPropertyRow({
         </p>
       </div>
       <div className="flex flex-none items-center gap-2">
-        <Button
+        <ButtonLink
           variant="outline"
           size="icon-sm"
           aria-label="Edit listing"
-          render={<Link href={`/dashboard/landlord/properties/${property.id}/edit`} />}
+          href={`/dashboard/landlord/properties/${property.id}/edit`}
         >
           <Pencil className="size-4" />
-        </Button>
+        </ButtonLink>
         <DeletePropertyButton
           propertyId={property.id}
           propertyTitle={property.title}

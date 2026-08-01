@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { XCircle } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 
 export const metadata: Metadata = {
   title: "Payment not completed | RentNest",
@@ -33,20 +32,20 @@ export default async function PaymentCancelPage({
 
       <div className="flex w-full flex-col gap-2 sm:flex-row">
         {rentalId && (
-          <Button
-            render={<Link href={`/dashboard/tenant/requests/${rentalId}/pay`} />}
+          <ButtonLink
+            href={`/dashboard/tenant/requests/${rentalId}/pay`}
             className="flex-1"
           >
             Try again
-          </Button>
+          </ButtonLink>
         )}
-        <Button
+        <ButtonLink
           variant="outline"
-          render={<Link href="/dashboard/tenant/requests" />}
+          href="/dashboard/tenant/requests"
           className="flex-1"
         >
           Back to my requests
-        </Button>
+        </ButtonLink>
       </div>
     </div>
   )

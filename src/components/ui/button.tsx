@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -55,4 +56,24 @@ function Button({
   )
 }
 
-export { Button, buttonVariants }
+/** A `next/link` styled like a Button, for navigation rather than an
+ * in-place action. Base UI's docs are explicit that `Button`'s `render` prop
+ * shouldn't be used to swap in a link — it force-applies button semantics
+ * (`role="button"`, button keyboard handling) onto an element that already
+ * has its own correct link semantics. Style the anchor directly instead. */
+function ButtonLink({
+  className,
+  variant = "default",
+  size = "default",
+  ...props
+}: React.ComponentProps<typeof Link> & VariantProps<typeof buttonVariants>) {
+  return (
+    <Link
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
+}
+
+export { Button, ButtonLink, buttonVariants }

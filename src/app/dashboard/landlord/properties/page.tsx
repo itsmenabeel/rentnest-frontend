@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { Plus } from "lucide-react"
 
 import { getCategoriesServer } from "@/lib/api/categories.server"
 import type { LandlordPropertyFilters } from "@/lib/api/landlord-properties"
 import { getLandlordPropertiesServer } from "@/lib/api/landlord-properties.server"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { LandlordPropertyBrowser } from "@/components/properties/landlord-property-browser"
 
 export const metadata: Metadata = {
@@ -56,10 +55,10 @@ export default async function LandlordPropertiesPage({
             {properties.meta.total === 1 ? "" : "s"} total.
           </p>
         </div>
-        <Button render={<Link href="/dashboard/landlord/properties/new" />}>
+        <ButtonLink href="/dashboard/landlord/properties/new">
           <Plus className="size-4" />
           Add property
-        </Button>
+        </ButtonLink>
       </div>
       <LandlordPropertyBrowser
         initialData={properties}

@@ -3,7 +3,7 @@ import { CreditCard, Handshake, Home as HomeIcon, Search, ShieldCheck } from "lu
 
 import { getCategoriesServer } from "@/lib/api/categories.server"
 import { getPropertiesServer } from "@/lib/api/properties.server"
-import { Button } from "@/components/ui/button"
+import { ButtonLink } from "@/components/ui/button"
 import { CategoryPills } from "@/components/properties/category-pills"
 import { EmptyState } from "@/components/common/empty-state"
 import { PropertyGrid } from "@/components/properties/property-grid"
@@ -45,18 +45,14 @@ export default async function HomePage() {
           securely. No broker in the middle.
         </p>
         <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
-          <Button size="lg" render={<Link href="/properties" />}>
+          <ButtonLink size="lg" href="/properties">
             <Search className="size-4" />
             Browse properties
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            render={<Link href="/auth/register" />}
-          >
+          </ButtonLink>
+          <ButtonLink size="lg" variant="outline" href="/auth/register">
             <HomeIcon className="size-4" />
             List your property
-          </Button>
+          </ButtonLink>
         </div>
       </section>
 
