@@ -112,7 +112,7 @@ export default async function TenantRequestDetailPage({
       )}
 
       {rental.status === "APPROVED" && (
-        <div className="flex items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
           <span>
             {rental.payment?.status === "PENDING"
               ? "Payment in progress."

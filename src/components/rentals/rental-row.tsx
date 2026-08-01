@@ -20,7 +20,7 @@ export function RentalRow({ rental }: { rental: RentalRequest }) {
       />
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex items-center justify-between gap-2">
-          <p className="truncate font-heading text-sm font-semibold text-foreground">
+          <p className="min-w-0 truncate font-heading text-sm font-semibold text-foreground">
             {rental.property.title}
           </p>
           <RentalStatusBadge status={rental.status} />
