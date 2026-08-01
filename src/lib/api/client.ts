@@ -4,7 +4,7 @@ import type { ApiErrorDetail, ApiResponseBody } from "@/lib/types/api"
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export type ApiFetchInit = Omit<RequestInit, "body"> & {
-  body?: BodyInit | Record<string, unknown> | unknown[]
+  body?: BodyInit | object
 }
 
 export class ApiRequestError extends Error {

@@ -1,19 +1,24 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Home, Menu } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { Home, LayoutDashboard, LogOut, Menu } from "lucide-react"
 
+import { clearToken } from "@/lib/auth/cookie"
+import { useAuthStore } from "@/lib/stores/auth-store"
+import { showSuccess } from "@/lib/utils/toast"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ThemeToggle } from "@/components/layout/theme-toggle"
+import { UserMenu } from "@/components/layout/user-menu"
 
 const navLinks = [
   { href: "/properties", label: "Browse" },
@@ -22,6 +27,16 @@ const navLinks = [
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
+  const user = useAuthStore((state) => state.user)
+  const clear = useAuthStore((state) => state.clear)
+
+  function handleLogout() {
+    clearToken()
+    clear()
+    showSuccess("Logged out.")
+    router.push("/")
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
@@ -51,13 +66,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Link
-            href="/auth/login"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Log in
-          </Link>
-          <Button render={<Link href="/auth/register" />}>Sign up</Button>
+          <UserMenu />
           <ThemeToggle />
         </div>
 
@@ -77,27 +86,50 @@ export function Navbar() {
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
                 {navLinks.map((link) => (
-                  <Link
+                  <SheetClose
                     key={link.href}
-                    href={link.href}
+                    render={<Link href={link.href} />}
                     className="rounded-md px-2 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
                   >
                     {link.label}
-                  </Link>
+                  </SheetClose>
                 ))}
                 <div className="my-2 border-t border-border" />
-                <Link
-                  href="/auth/login"
-                  className="rounded-md px-2 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
-                >
-                  Log in
-                </Link>
-                <Link
-                  href="/auth/register"
-                  className="rounded-md px-2 py-2.5 text-sm font-medium text-primary hover:bg-muted"
-                >
-                  Sign up
-                </Link>
+                {user ? (
+                  <>
+                    <SheetClose
+                      render={
+                        <Link href={`/dashboard/${user.role.toLowerCase()}`} />
+                      }
+                      className="flex items-center gap-2 rounded-md px-2 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                    >
+                      <LayoutDashboard className="size-4" />
+                      Dashboard
+                    </SheetClose>
+                    <SheetClose
+                      render={<button type="button" onClick={handleLogout} />}
+                      className="flex items-center gap-2 rounded-md px-2 py-2.5 text-left text-sm font-medium text-destructive hover:bg-muted"
+                    >
+                      <LogOut className="size-4" />
+                      Log out
+                    </SheetClose>
+                  </>
+                ) : (
+                  <>
+                    <SheetClose
+                      render={<Link href="/auth/login" />}
+                      className="rounded-md px-2 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
+                    >
+                      Log in
+                    </SheetClose>
+                    <SheetClose
+                      render={<Link href="/auth/register" />}
+                      className="rounded-md px-2 py-2.5 text-sm font-medium text-primary hover:bg-muted"
+                    >
+                      Sign up
+                    </SheetClose>
+                  </>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

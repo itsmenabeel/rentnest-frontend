@@ -6,7 +6,7 @@ export interface Category {
   name: string
 }
 
-export interface LandlordSummary {
+export interface User {
   id: string
   name: string
   email: string
@@ -16,6 +16,9 @@ export interface LandlordSummary {
   createdAt: string
   updatedAt: string
 }
+
+/** Alias kept for call-site clarity where a property's landlord is read. */
+export type LandlordSummary = User
 
 export interface Property {
   id: string

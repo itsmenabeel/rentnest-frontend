@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { AuthHydrator } from "@/components/layout/auth-hydrator";
 import { QueryProvider } from "@/lib/query/provider";
 
 const newsreader = Newsreader({
@@ -41,6 +42,7 @@ export default function RootLayout({
         <ThemeProvider>
           <QueryProvider>
             <TooltipProvider>
+              <AuthHydrator />
               <Navbar />
               <main className="flex flex-1 flex-col">{children}</main>
               <Footer />
