@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { QueryProvider } from "@/lib/query/provider";
 
 const newsreader = Newsreader({
   variable: "--font-newsreader",
@@ -20,9 +21,9 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "RentNest — Renting in Dhaka, made simple",
+  title: "RentNest | Renting in Dhaka, made simple",
   description:
-    "Browse verified rental listings, request to move in, and pay securely — all without a broker in the middle.",
+    "Browse verified rental listings, request to move in, and pay securely. No broker in the middle.",
 };
 
 export default function RootLayout({
@@ -38,12 +39,14 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          <TooltipProvider>
-            <Navbar />
-            <main className="flex flex-1 flex-col">{children}</main>
-            <Footer />
-            <Toaster />
-          </TooltipProvider>
+          <QueryProvider>
+            <TooltipProvider>
+              <Navbar />
+              <main className="flex flex-1 flex-col">{children}</main>
+              <Footer />
+              <Toaster />
+            </TooltipProvider>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>

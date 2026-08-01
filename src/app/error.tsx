@@ -18,9 +18,7 @@ export default function Error({
   return (
     <ErrorState
       title="Something went wrong"
-      description={
-        error.message || "An unexpected error occurred. Please try again."
-      }
+      description={error.message || "This page broke. Try again."}
       onRetry={() => unstable_retry()}
     />
   )
