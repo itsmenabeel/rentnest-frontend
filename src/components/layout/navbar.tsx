@@ -20,16 +20,26 @@ import {
 import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { UserMenu } from "@/components/layout/user-menu"
 
-const navLinks = [
-  { href: "/properties", label: "Browse" },
-  { href: "/auth/register", label: "List your property" },
-]
-
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const user = useAuthStore((state) => state.user)
   const clear = useAuthStore((state) => state.clear)
+
+  // "List your property" only makes sense for a landlord (or a visitor who
+  // isn't one yet) — a logged-in tenant/admin has nothing useful to land on.
+  const listPropertyHref = !user
+    ? "/auth/register"
+    : user.role === "LANDLORD"
+      ? "/dashboard/landlord/properties/new"
+      : null
+
+  const navLinks = [
+    { href: "/properties", label: "Browse" },
+    ...(listPropertyHref
+      ? [{ href: listPropertyHref, label: "List your property" }]
+      : []),
+  ]
 
   function handleLogout() {
     clearToken()
