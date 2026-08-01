@@ -151,7 +151,7 @@ export function LandlordRequestsTable({
           })
         }
       >
-        <SelectTrigger className="w-44">
+        <SelectTrigger aria-label="Filter by status" className="w-44">
           <SelectValue placeholder="Status" />
         </SelectTrigger>
         <SelectContent>

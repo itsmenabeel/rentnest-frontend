@@ -87,7 +87,7 @@ export function AdminPropertiesTable({
             })
           }
         >
-          <SelectTrigger className="w-44">
+          <SelectTrigger aria-label="Filter by category" className="w-44">
             <SelectValue placeholder="Category" />
           </SelectTrigger>
           <SelectContent>
@@ -112,7 +112,7 @@ export function AdminPropertiesTable({
             })
           }
         >
-          <SelectTrigger className="w-44">
+          <SelectTrigger aria-label="Filter by availability" className="w-44">
             <SelectValue placeholder="Availability" />
           </SelectTrigger>
           <SelectContent>

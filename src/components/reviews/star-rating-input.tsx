@@ -14,13 +14,15 @@ export function StarRatingInput({
   disabled?: boolean
 }) {
   return (
-    <div className="flex items-center gap-1">
+    <div role="radiogroup" aria-label="Rating" className="flex items-center gap-1">
       {Array.from({ length: 5 }, (_, i) => {
         const rating = i + 1
         return (
           <button
             key={rating}
             type="button"
+            role="radio"
+            aria-checked={rating === value}
             disabled={disabled}
             onClick={() => onChange(rating)}
             aria-label={`${rating} star${rating === 1 ? "" : "s"}`}

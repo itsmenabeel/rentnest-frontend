@@ -74,6 +74,7 @@ export function PropertyFiltersBar({
           value={draft.search}
           onChange={(e) => setDraft((d) => ({ ...d, search: e.target.value }))}
           placeholder="Search by title, area, or description"
+          aria-label="Search properties"
           className="pl-8"
         />
       </div>
@@ -84,7 +85,7 @@ export function PropertyFiltersBar({
           onChange({ categoryId: value === "all" ? undefined : (value ?? undefined) })
         }
       >
-        <SelectTrigger className="sm:w-44">
+        <SelectTrigger aria-label="Filter by property type" className="sm:w-44">
           <SelectValue placeholder="Property type" />
         </SelectTrigger>
         <SelectContent>
@@ -105,6 +106,7 @@ export function PropertyFiltersBar({
           value={draft.minPrice}
           onChange={(e) => setDraft((d) => ({ ...d, minPrice: e.target.value }))}
           placeholder="Min ৳"
+          aria-label="Minimum price"
           className="w-24"
         />
         <span className="text-sm text-muted-foreground">–</span>
@@ -115,6 +117,7 @@ export function PropertyFiltersBar({
           value={draft.maxPrice}
           onChange={(e) => setDraft((d) => ({ ...d, maxPrice: e.target.value }))}
           placeholder="Max ৳"
+          aria-label="Maximum price"
           className="w-24"
         />
       </div>
