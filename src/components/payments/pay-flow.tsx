@@ -1,20 +1,18 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { useMutation } from "@tanstack/react-query"
-import { CircleAlert, RefreshCw } from "lucide-react"
+import { CircleAlert } from "lucide-react"
 
 import { createPayment } from "@/lib/api/payments"
 import { handleApiError } from "@/lib/api/error"
 import { showError } from "@/lib/utils/toast"
 import { formatPrice } from "@/lib/utils/currency"
 import type { PaymentSummary, RentalRequest } from "@/lib/types/models"
-import { Button } from "@/components/ui/button"
 import { PayNowButton } from "@/components/payments/pay-now-button"
+import { PaymentPollingPanel } from "@/components/payments/payment-polling-panel"
 
 export function PayFlow({ rental }: { rental: RentalRequest }) {
-  const router = useRouter()
   const [payment, setPayment] = useState<PaymentSummary | null>(
     rental.payment?.status === "PENDING" ? rental.payment : null
   )
@@ -61,23 +59,12 @@ export function PayFlow({ rental }: { rental: RentalRequest }) {
 
   if (payment) {
     return (
-      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
-        <p className="text-sm font-medium text-foreground">
-          Complete your payment in the new tab.
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Transaction {payment.transactionId} &middot; {formatPrice(payment.amount)}
-        </p>
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-fit"
-          onClick={() => router.refresh()}
-        >
-          <RefreshCw className="size-3.5" />
-          Refresh status
-        </Button>
-      </div>
+      <PaymentPollingPanel
+        paymentId={payment.id}
+        rentalId={rental.id}
+        onReopen={handlePay}
+        isReopening={createMutation.isPending}
+      />
     )
   }
 

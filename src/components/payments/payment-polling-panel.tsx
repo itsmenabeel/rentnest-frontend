@@ -1,0 +1,76 @@
+"use client"
+
+import { useEffect } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useQuery } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
+
+import { getPayment } from "@/lib/api/payments"
+import { qk } from "@/lib/query/keys"
+import { formatPrice } from "@/lib/utils/currency"
+import { Button } from "@/components/ui/button"
+
+export function PaymentPollingPanel({
+  paymentId,
+  rentalId,
+  onReopen,
+  isReopening,
+}: {
+  paymentId: string
+  rentalId: string
+  onReopen: () => void
+  isReopening: boolean
+}) {
+  const router = useRouter()
+
+  const { data: payment } = useQuery({
+    queryKey: qk.payment(paymentId),
+    queryFn: () => getPayment(paymentId),
+    refetchInterval: (query) =>
+      query.state.data?.status === "PENDING" ? 3000 : false,
+  })
+
+  useEffect(() => {
+    if (payment?.status === "COMPLETED") {
+      router.replace(`/payment/success?rentalId=${rentalId}`)
+    } else if (payment?.status === "FAILED") {
+      router.replace(`/payment/cancel?rentalId=${rentalId}&reason=failed`)
+    }
+  }, [payment?.status, rentalId, router])
+
+  return (
+    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
+      <div className="flex items-center gap-2.5 text-sm font-medium text-foreground">
+        <Loader2 className="size-4 flex-none animate-spin text-primary" />
+        Waiting for payment confirmation
+      </div>
+      <p className="text-sm text-muted-foreground">
+        Complete the payment in the tab we opened. This updates automatically
+        once it&apos;s done, no need to refresh.
+      </p>
+      {payment && (
+        <p className="text-xs text-muted-foreground">
+          Transaction {payment.transactionId} &middot; {formatPrice(payment.amount)}
+        </p>
+      )}
+      <div className="flex flex-wrap items-center gap-3">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onReopen}
+          disabled={isReopening}
+        >
+          {isReopening && <Loader2 className="size-3.5 animate-spin" />}
+          Reopen checkout
+        </Button>
+        <Link
+          href={`/dashboard/tenant/requests/${rentalId}`}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Back to request
+        </Link>
+      </div>
+    </div>
+  )
+}
