@@ -1,4 +1,4 @@
-type Filters = Record<string, unknown> | undefined
+type Filters = object | undefined
 
 export const qk = {
   me: () => ["me"] as const,
