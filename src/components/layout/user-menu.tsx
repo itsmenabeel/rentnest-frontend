@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -66,18 +67,20 @@ export function UserMenu() {
         </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}
-        >
-          <LayoutDashboard />
-          Dashboard
-        </DropdownMenuItem>
-        <DropdownMenuItem variant="destructive" onClick={handleLogout}>
-          <LogOut />
-          Log out
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            render={<Link href={`/dashboard/${user.role.toLowerCase()}`} />}
+          >
+            <LayoutDashboard />
+            Dashboard
+          </DropdownMenuItem>
+          <DropdownMenuItem variant="destructive" onClick={handleLogout}>
+            <LogOut />
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
