@@ -1,15 +1,17 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Calendar, MapPin, MessageSquare } from "lucide-react"
+import { ArrowLeft, Calendar, MapPin, MessageSquare, Star } from "lucide-react"
 
 import { ApiRequestError } from "@/lib/api/client"
 import { getRentalServer } from "@/lib/api/rentals.server"
 import { formatDate } from "@/lib/utils/format-date"
 import { formatPrice } from "@/lib/utils/currency"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { PropertyImage } from "@/components/properties/property-image"
 import { RentalStatusBadge } from "@/components/rentals/rental-status-badge"
+import { ReviewForm } from "@/components/reviews/review-form"
 
 type Params = Promise<{ id: string }>
 
@@ -126,8 +128,37 @@ export default async function TenantRequestDetailPage({
       )}
 
       {rental.status === "COMPLETED" && !rental.review && (
-        <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-          You&apos;ll be able to leave a review here soon.
+        <ReviewForm rentalRequestId={rental.id} />
+      )}
+
+      {rental.review && (
+        <div className="flex flex-col gap-2 rounded-xl border border-border bg-card p-4">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-sm font-semibold text-foreground">
+              Your review
+            </p>
+            <div className="flex items-center gap-0.5">
+              {Array.from({ length: 5 }, (_, i) => (
+                <Star
+                  key={i}
+                  className={cn(
+                    "size-3.5",
+                    i < rental.review!.rating
+                      ? "fill-price text-price"
+                      : "text-border"
+                  )}
+                />
+              ))}
+            </div>
+          </div>
+          {rental.review.comment && (
+            <p className="text-sm text-muted-foreground">
+              {rental.review.comment}
+            </p>
+          )}
+          <p className="text-xs text-muted-foreground">
+            {formatDate(rental.review.createdAt)}
+          </p>
         </div>
       )}
     </div>

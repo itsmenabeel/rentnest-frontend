@@ -16,3 +16,16 @@ export function getPropertyReviews(
     `/api/reviews/property/${propertyId}${toQueryString(filters)}`
   )
 }
+
+export interface CreateReviewInput {
+  rentalRequestId: string
+  rating: number
+  comment?: string
+}
+
+export function createReview(input: CreateReviewInput) {
+  return apiFetch<Review>("/api/reviews", {
+    method: "POST",
+    body: input,
+  })
+}
