@@ -100,7 +100,11 @@ export default async function PropertyDetailPage({
         </div>
 
         <div className="flex flex-col gap-4">
-          <RequestToRentCta propertyId={property.id} />
+          <RequestToRentCta
+            propertyId={property.id}
+            propertyTitle={property.title}
+            isAvailable={property.isAvailable}
+          />
 
           <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5">
             <h2 className="font-heading text-sm font-semibold text-muted-foreground">
