@@ -57,9 +57,17 @@ export default async function TenantDashboardPage() {
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="font-heading text-lg font-semibold">
-          Recent payments
-        </h2>
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-lg font-semibold">
+            Recent payments
+          </h2>
+          <Link
+            href="/dashboard/tenant/payments"
+            className="text-sm font-semibold text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            View all
+          </Link>
+        </div>
         {recentPayments.length === 0 ? (
           <EmptyState
             icon={Inbox}

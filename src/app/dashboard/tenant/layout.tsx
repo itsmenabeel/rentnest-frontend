@@ -3,6 +3,7 @@ import { DashboardNav } from "@/components/layout/dashboard-nav"
 const navItems = [
   { href: "/dashboard/tenant", label: "Overview" },
   { href: "/dashboard/tenant/requests", label: "My requests" },
+  { href: "/dashboard/tenant/payments", label: "Payments" },
 ]
 
 export default function TenantDashboardLayout({
