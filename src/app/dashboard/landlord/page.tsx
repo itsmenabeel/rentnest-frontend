@@ -1,19 +1,24 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Building2, CheckCircle2, XCircle } from "lucide-react"
+import { Building2, CheckCircle2, Inbox, XCircle } from "lucide-react"
 
 import { getLandlordPropertiesServer } from "@/lib/api/landlord-properties.server"
+import { getLandlordRequestsServer } from "@/lib/api/landlord-rentals.server"
 import { EmptyState } from "@/components/common/empty-state"
 import { StatCard } from "@/components/common/stat-card"
 import { Button } from "@/components/ui/button"
 import { LandlordPropertyRow } from "@/components/properties/landlord-property-row"
+import { LandlordRequestSummaryRow } from "@/components/rentals/landlord-request-summary-row"
 
 export const metadata: Metadata = {
   title: "Landlord dashboard | RentNest",
 }
 
 export default async function LandlordDashboardPage() {
-  const properties = await getLandlordPropertiesServer({ limit: 100 })
+  const [properties, requests] = await Promise.all([
+    getLandlordPropertiesServer({ limit: 100 }),
+    getLandlordRequestsServer({ limit: 5 }),
+  ])
   const available = properties.properties.filter((p) => p.isAvailable).length
   const recent = properties.properties.slice(0, 5)
 
@@ -67,6 +72,33 @@ export default async function LandlordDashboardPage() {
           <div className="flex flex-col gap-2">
             {recent.map((property) => (
               <LandlordPropertyRow key={property.id} property={property} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <section className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h2 className="font-heading text-lg font-semibold">
+            Recent requests
+          </h2>
+          <Link
+            href="/dashboard/landlord/requests"
+            className="text-sm font-semibold text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
+            View all
+          </Link>
+        </div>
+        {requests.rentals.length === 0 ? (
+          <EmptyState
+            icon={Inbox}
+            title="No requests yet"
+            description="Requests will show up here once tenants apply to your listings."
+          />
+        ) : (
+          <div className="flex flex-col gap-2">
+            {requests.rentals.map((rental) => (
+              <LandlordRequestSummaryRow key={rental.id} rental={rental} />
             ))}
           </div>
         )}
