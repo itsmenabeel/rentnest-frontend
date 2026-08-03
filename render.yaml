@@ -1,0 +1,29 @@
+# Render Blueprint — deploys the RentNest frontend as a single web service.
+# Docs: https://render.com/docs/blueprint-spec
+#
+# A Node web service (not a Static Site) is required: proxy.ts (role-based
+# route protection), next/image optimization, and Server Components all need
+# a running Node process, not just static file hosting.
+#
+# Usage: commit this file, then in the Render dashboard choose
+# "New +" -> "Blueprint" and point it at this repo. Render will prompt for
+# every `sync: false` value once, at creation time.
+
+services:
+  - type: web
+    name: rentnest-frontend
+    runtime: node
+    plan: free
+    region: singapore
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "3000"
+      # Origin only, no /api suffix — the backend's deployed Render URL.
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false

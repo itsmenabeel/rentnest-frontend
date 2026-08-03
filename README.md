@@ -1,34 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RentNest Frontend
 
-## Getting Started
+A rental property marketplace frontend built with Next.js (App Router). Landlords
+list properties and manage rental requests; tenants browse listings, request to
+move in, and pay securely via SSLCommerz; admins moderate the platform. The
+backend is [`itsmenabeel/rentnest-backend`](https://github.com/itsmenabeel/rentnest-backend)
+(Express, TypeScript, Prisma, PostgreSQL), already deployed and live.
 
-First, run the development server:
+See [`API_INTEGRATION.md`](./API_INTEGRATION.md) for the full route-to-endpoint mapping.
+
+## Tech stack
+
+| Area | Choice |
+| --- | --- |
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4, Base UI primitives |
+| Forms & validation | React Hook Form + Zod |
+| Server state | TanStack Query |
+| Client state | Zustand (auth store) |
+| Auth | JWT, stored in a cookie, role-based route protection via `src/proxy.ts` |
+| Payments | SSLCommerz (sandbox) |
+| Deployment | Render (Node web service) |
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). By default, `.env.example`
+points `NEXT_PUBLIC_API_BASE_URL` at `http://localhost:5000`. Point it at the
+live backend instead to skip running the backend locally:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# .env.local
+NEXT_PUBLIC_API_BASE_URL=https://rentnest-backend-bpd7.onrender.com
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo accounts
 
-## Learn More
+The backend's seed script creates these accounts. All demo passwords are
+`Demo@123` except the admin account.
 
-To learn more about Next.js, take a look at the following resources:
+| Role | Email | Password | Notes |
+| --- | --- | --- | --- |
+| Admin | `admin@rentnest.com` | `Admin@123` | Ban/unban users, category CRUD, platform-wide moderation views |
+| Landlord | `landlord1@rentnest.com` | `Demo@123` | Owns the Gulshan apartment, Dhanmondi studio, Mirpur sublet |
+| Landlord | `landlord2@rentnest.com` | `Demo@123` | Owns the Uttara house, Banani duplex |
+| Tenant | `tenant1@rentnest.com` | `Demo@123` | Has a `COMPLETED` rental (with payment and review), an `ACTIVE` rental, and a `REJECTED` request |
+| Tenant | `tenant2@rentnest.com` | `Demo@123` | Has an unpaid `APPROVED` request, useful for testing the payment flow |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`ADMIN` isn't self-registrable; new signups via `/auth/register` are always
+`TENANT` or `LANDLORD`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Features
+
+- **Public**: browse/search/filter listings by category and price, property
+  detail pages with image gallery and reviews.
+- **Tenant**: request to rent, dashboard with request history, SSLCommerz
+  checkout with live status polling, payment history, review submission
+  (gated on a completed rental).
+- **Landlord**: create/edit/delete listings with image upload, approve/reject/
+  mark-completed on incoming requests (optimistic updates).
+- **Admin**: ban/unban users, moderate properties and rentals, category CRUD.
+- Role-based route protection, consistent toast/inline-form/error-boundary
+  error handling, loading skeletons, dark mode, responsive layout.
 
 ## Deployment
 
-This app deploys to [Render](https://render.com) as a Node web service (`npm run build` / `npm start`), alongside its backend — not Vercel. See the [Next.js self-hosting guide](https://nextjs.org/docs/app/building-your-application/deploying) for details on what `next start` provides.
+This app deploys to [Render](https://render.com) as a Node web service,
+matching the backend. `proxy.ts`, `next/image` optimization, and Server
+Components all need a running Node process (`next start`); static hosting on
+Vercel doesn't support that.
+
+1. Push this repo to GitHub.
+2. In the Render dashboard: **New +** → **Blueprint**, point it at this repo.
+   [`render.yaml`](./render.yaml) defines the service (`npm ci && npm run
+   build` / `npm start`).
+3. Render prompts once for `NEXT_PUBLIC_API_BASE_URL`. Set it to the
+   backend's live URL (`https://rentnest-backend-bpd7.onrender.com`).
+4. Free-tier Render services spin down after inactivity, so the first request
+   after idle time may take a few seconds to wake up (cold start), the same
+   as the backend.
+
+**Live frontend**: _TODO: add the Render URL here after the first deploy._
+**Live backend**: https://rentnest-backend-bpd7.onrender.com ([API docs](https://rentnest-backend-bpd7.onrender.com/api/docs/))
