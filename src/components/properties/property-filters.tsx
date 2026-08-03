@@ -5,6 +5,7 @@ import { Search, X } from "lucide-react"
 
 import type { PropertyFilters } from "@/lib/api/properties"
 import type { Category } from "@/lib/types/models"
+import { normalizeRange, toPositiveNumber } from "@/lib/utils/number"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -52,10 +53,14 @@ export function PropertyFiltersBar({
       return
     }
     const handle = setTimeout(() => {
+      const { min, max } = normalizeRange(
+        toPositiveNumber(draft.minPrice),
+        toPositiveNumber(draft.maxPrice)
+      )
       onChange({
         search: draft.search || undefined,
-        minPrice: draft.minPrice ? Number(draft.minPrice) : undefined,
-        maxPrice: draft.maxPrice ? Number(draft.maxPrice) : undefined,
+        minPrice: min,
+        maxPrice: max,
       })
     }, 400)
     return () => clearTimeout(handle)
