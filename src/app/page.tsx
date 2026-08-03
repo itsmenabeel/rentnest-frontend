@@ -1,5 +1,13 @@
 import Link from "next/link"
-import { CreditCard, Handshake, Home as HomeIcon, Search, ShieldCheck } from "lucide-react"
+import {
+  CreditCard,
+  Handshake,
+  Home as HomeIcon,
+  Search,
+  Send,
+  ShieldCheck,
+  Wallet,
+} from "lucide-react"
 
 import { getCategoriesServer } from "@/lib/api/categories.server"
 import { getPropertiesServer } from "@/lib/api/properties.server"
@@ -8,6 +16,26 @@ import { CategoryPills } from "@/components/properties/category-pills"
 import { DecorativeBackground } from "@/components/common/decorative-background"
 import { EmptyState } from "@/components/common/empty-state"
 import { PropertyGrid } from "@/components/properties/property-grid"
+
+const steps = [
+  {
+    icon: Search,
+    title: "Browse listings",
+    description:
+      "Filter by area, price, and property type until you find a place that fits.",
+  },
+  {
+    icon: Send,
+    title: "Request to move in",
+    description: "Send the landlord your move-in date and a short message.",
+  },
+  {
+    icon: Wallet,
+    title: "Pay securely",
+    description:
+      "Once the landlord approves, pay through SSLCommerz and track the receipt in your dashboard.",
+  },
+]
 
 const valueProps = [
   {
@@ -59,6 +87,62 @@ export default async function HomePage() {
       </section>
 
       <section className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:px-12">
+        <div className="mb-8 text-center">
+          <h2 className="font-heading text-2xl font-semibold">
+            How it works
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Three steps from browsing to move-in.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          {steps.map((step, i) => (
+            <div
+              key={step.title}
+              className="flex flex-col items-center gap-3 text-center"
+            >
+              <div className="relative flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                <step.icon className="size-5" />
+                <span className="absolute -top-1.5 -right-1.5 flex size-5 items-center justify-center rounded-full bg-accent text-[0.7rem] font-semibold text-accent-foreground">
+                  {i + 1}
+                </span>
+              </div>
+              <h3 className="text-base font-semibold text-foreground">
+                {step.title}
+              </h3>
+              <p className="max-w-64 text-sm leading-relaxed text-muted-foreground">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden py-16">
+        <DecorativeBackground className="opacity-60" />
+        <div className="relative mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-12">
+          <h2 className="mb-8 text-center font-heading text-2xl font-semibold">
+            Why RentNest
+          </h2>
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+            {valueProps.map((prop) => (
+              <div key={prop.title} className="group flex flex-col gap-2">
+                <span className="flex size-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-transform duration-200 group-hover:-translate-y-0.5">
+                  <prop.icon className="size-4.5" />
+                </span>
+                <h3 className="text-base font-semibold text-foreground">
+                  {prop.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {prop.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:px-12">
         <div className="mb-5 flex items-baseline justify-between">
           <h2 className="font-heading text-2xl font-semibold">
             Featured homes
@@ -88,25 +172,6 @@ export default async function HomePage() {
           <CategoryPills categories={categories} />
         </section>
       )}
-
-      <section className="relative overflow-hidden py-16">
-        <DecorativeBackground className="opacity-60" />
-        <div className="relative mx-auto grid w-full max-w-[90rem] grid-cols-1 gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-12">
-          {valueProps.map((prop) => (
-            <div key={prop.title} className="group flex flex-col gap-2">
-              <span className="flex size-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-transform duration-200 group-hover:-translate-y-0.5">
-                <prop.icon className="size-4.5" />
-              </span>
-              <h3 className="text-base font-semibold text-foreground">
-                {prop.title}
-              </h3>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {prop.description}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   )
 }
