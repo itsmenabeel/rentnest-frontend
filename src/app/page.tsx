@@ -5,6 +5,7 @@ import { getCategoriesServer } from "@/lib/api/categories.server"
 import { getPropertiesServer } from "@/lib/api/properties.server"
 import { ButtonLink } from "@/components/ui/button"
 import { CategoryPills } from "@/components/properties/category-pills"
+import { DecorativeBackground } from "@/components/common/decorative-background"
 import { EmptyState } from "@/components/common/empty-state"
 import { PropertyGrid } from "@/components/properties/property-grid"
 
@@ -36,7 +37,8 @@ export default async function HomePage() {
 
   return (
     <div>
-      <section className="flex flex-col items-center gap-4 px-4 py-20 text-center sm:px-6 sm:py-28">
+      <section className="relative flex flex-col items-center gap-4 overflow-hidden px-4 py-20 text-center sm:px-6 sm:py-28">
+        <DecorativeBackground />
         <h1 className="max-w-2xl font-heading text-4xl font-semibold leading-tight sm:text-5xl">
           Renting in Dhaka, made simple
         </h1>
@@ -56,7 +58,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-12">
+      <section className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:px-12">
         <div className="mb-5 flex items-baseline justify-between">
           <h2 className="font-heading text-2xl font-semibold">
             Featured homes
@@ -79,7 +81,7 @@ export default async function HomePage() {
       </section>
 
       {categories.length > 0 && (
-        <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-12">
+        <section className="mx-auto w-full max-w-[90rem] px-4 py-12 sm:px-6 lg:px-12">
           <h2 className="mb-5 font-heading text-2xl font-semibold">
             Browse by category
           </h2>
@@ -87,20 +89,23 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 py-16 sm:grid-cols-3 sm:px-6 lg:px-12">
-        {valueProps.map((prop) => (
-          <div key={prop.title} className="flex flex-col gap-2">
-            <span className="flex size-9 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-              <prop.icon className="size-4.5" />
-            </span>
-            <h3 className="text-base font-semibold text-foreground">
-              {prop.title}
-            </h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {prop.description}
-            </p>
-          </div>
-        ))}
+      <section className="relative overflow-hidden py-16">
+        <DecorativeBackground className="opacity-60" />
+        <div className="relative mx-auto grid w-full max-w-[90rem] grid-cols-1 gap-8 px-4 sm:grid-cols-3 sm:px-6 lg:px-12">
+          {valueProps.map((prop) => (
+            <div key={prop.title} className="group flex flex-col gap-2">
+              <span className="flex size-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-transform duration-200 group-hover:-translate-y-0.5">
+                <prop.icon className="size-4.5" />
+              </span>
+              <h3 className="text-base font-semibold text-foreground">
+                {prop.title}
+              </h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {prop.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </section>
     </div>
   )

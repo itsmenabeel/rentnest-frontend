@@ -50,7 +50,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-12">
+      <div className="mx-auto flex max-w-[90rem] items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-12">
         <Link href="/" className="flex items-center gap-2.5">
           <span className="flex size-8 flex-none items-center justify-center rounded-[9px] bg-primary text-primary-foreground">
             <Home className="size-4.5" />

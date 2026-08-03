@@ -5,8 +5,14 @@ import { Skeleton } from "@/components/ui/skeleton"
 export function PropertyGrid({ properties }: { properties: Property[] }) {
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {properties.map((property) => (
-        <PropertyCard key={property.id} property={property} />
+      {properties.map((property, i) => (
+        <div
+          key={property.id}
+          className="animate-in fade-in slide-in-from-bottom-4 fill-mode-both duration-500"
+          style={{ animationDelay: `${Math.min(i, 8) * 50}ms` }}
+        >
+          <PropertyCard property={property} />
+        </div>
       ))}
     </div>
   )
