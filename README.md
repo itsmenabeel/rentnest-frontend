@@ -86,4 +86,5 @@ Vercel doesn't support that.
    as the backend.
 
 **Live frontend**: [Click Here](https://rentnest-frontend-xdw8.onrender.com)
-**Live backend**: [Click Here (API Docs)](https://rentnest-backend-bpd7.onrender.com/api/docs/))
+
+**Live backend**: [Click Here (API Docs)](https://rentnest-backend-bpd7.onrender.com/api/docs/)
