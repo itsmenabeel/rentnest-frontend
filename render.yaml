@@ -17,7 +17,11 @@ services:
     region: singapore
     branch: main
     autoDeploy: true
-    buildCommand: npm ci && npm run build
+    # --include=dev is required: NODE_ENV=production (below) makes plain
+    # `npm ci` skip devDependencies, which would drop @tailwindcss/postcss,
+    # tailwindcss, and typescript itself — all needed by `next build`, even
+    # though none of them are needed at runtime.
+    buildCommand: npm ci --include=dev && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
