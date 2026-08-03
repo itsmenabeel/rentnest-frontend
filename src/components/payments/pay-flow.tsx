@@ -16,9 +16,22 @@ export function PayFlow({ rental }: { rental: RentalRequest }) {
   const [payment, setPayment] = useState<PaymentSummary | null>(
     rental.payment?.status === "PENDING" ? rental.payment : null
   )
+  // Only ever populated fresh from a createPayment response — PaymentSummary
+  // (what we get back from polling, or from the rental itself) never
+  // includes it, so a page reload mid-payment loses it and the panel falls
+  // back to its "get a new link" affordance.
+  const [gatewayUrl, setGatewayUrl] = useState<string | null>(null)
 
   const createMutation = useMutation({
     mutationFn: () => createPayment(rental.id),
+    onSuccess: (res) => {
+      setPayment(res.payment)
+      if (res.gatewayUrl) {
+        setGatewayUrl(res.gatewayUrl)
+      } else {
+        showError("Checkout link unavailable right now. Try again.")
+      }
+    },
     onError: (error) => handleApiError(error),
   })
 
@@ -31,39 +44,14 @@ export function PayFlow({ rental }: { rental: RentalRequest }) {
     )
   }
 
-  const handlePay = () => {
-    // Open the tab synchronously on the click, before the create request
-    // resolves — popup blockers only allow window.open from a direct user
-    // gesture, not from inside an async callback.
-    const checkoutTab = window.open("about:blank", "_blank")
-
-    createMutation.mutate(undefined, {
-      onSuccess: (res) => {
-        if (!res.gatewayUrl) {
-          checkoutTab?.close()
-          showError("Could not start checkout. Try again.")
-          return
-        }
-        setPayment(res.payment)
-        if (checkoutTab) {
-          checkoutTab.location.href = res.gatewayUrl
-        } else {
-          showError("Allow popups for this site, then try again.")
-        }
-      },
-      onError: () => {
-        checkoutTab?.close()
-      },
-    })
-  }
-
   if (payment) {
     return (
       <PaymentPollingPanel
         paymentId={payment.id}
         rentalId={rental.id}
-        onReopen={handlePay}
-        isReopening={createMutation.isPending}
+        gatewayUrl={gatewayUrl}
+        onGetLink={() => createMutation.mutate()}
+        isGettingLink={createMutation.isPending}
       />
     )
   }
@@ -73,7 +61,10 @@ export function PayFlow({ rental }: { rental: RentalRequest }) {
       <p className="text-sm text-muted-foreground">
         {formatPrice(rental.property.price)} due for {rental.property.title}.
       </p>
-      <PayNowButton onClick={handlePay} isPending={createMutation.isPending} />
+      <PayNowButton
+        onClick={() => createMutation.mutate()}
+        isPending={createMutation.isPending}
+      />
     </div>
   )
 }

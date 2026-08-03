@@ -4,23 +4,25 @@ import { useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
+import { ExternalLink, Loader2 } from "lucide-react"
 
 import { getPayment } from "@/lib/api/payments"
 import { qk } from "@/lib/query/keys"
 import { formatPrice } from "@/lib/utils/currency"
-import { Button } from "@/components/ui/button"
+import { Button, ButtonLink } from "@/components/ui/button"
 
 export function PaymentPollingPanel({
   paymentId,
   rentalId,
-  onReopen,
-  isReopening,
+  gatewayUrl,
+  onGetLink,
+  isGettingLink,
 }: {
   paymentId: string
   rentalId: string
-  onReopen: () => void
-  isReopening: boolean
+  gatewayUrl: string | null
+  onGetLink: () => void
+  isGettingLink: boolean
 }) {
   const router = useRouter()
 
@@ -46,8 +48,9 @@ export function PaymentPollingPanel({
         Waiting for payment confirmation
       </div>
       <p className="text-sm text-muted-foreground">
-        Complete the payment in the tab we opened. This updates automatically
-        once it&apos;s done, no need to refresh.
+        {gatewayUrl
+          ? "Continue to SSLCommerz to finish paying. This page updates automatically once it's done, no need to refresh."
+          : "Get a secure checkout link to finish paying."}
       </p>
       {payment && (
         <p className="text-xs text-muted-foreground">
@@ -55,15 +58,27 @@ export function PaymentPollingPanel({
         </p>
       )}
       <div className="flex flex-wrap items-center gap-3">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onReopen}
-          disabled={isReopening}
-        >
-          {isReopening && <Loader2 className="size-3.5 animate-spin" />}
-          Reopen checkout
-        </Button>
+        {gatewayUrl ? (
+          <ButtonLink
+            href={gatewayUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="sm"
+          >
+            <ExternalLink className="size-3.5" />
+            Open secure checkout
+          </ButtonLink>
+        ) : (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onGetLink}
+            disabled={isGettingLink}
+          >
+            {isGettingLink && <Loader2 className="size-3.5 animate-spin" />}
+            Get checkout link
+          </Button>
+        )}
         <Link
           href={`/dashboard/tenant/requests/${rentalId}`}
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
