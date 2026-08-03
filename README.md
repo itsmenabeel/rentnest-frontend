@@ -85,5 +85,5 @@ Vercel doesn't support that.
    after idle time may take a few seconds to wake up (cold start), the same
    as the backend.
 
-**Live frontend**: _TODO: add the Render URL here after the first deploy._
-**Live backend**: https://rentnest-backend-bpd7.onrender.com ([API docs](https://rentnest-backend-bpd7.onrender.com/api/docs/))
+**Live frontend**: [Click Here](https://rentnest-frontend-xdw8.onrender.com)
+**Live backend**: [Click Here (API Docs)](https://rentnest-backend-bpd7.onrender.com/api/docs/))

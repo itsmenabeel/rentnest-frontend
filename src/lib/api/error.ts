@@ -7,14 +7,21 @@ import { showError } from "@/lib/utils/toast"
 
 export function handleApiError<T extends FieldValues = FieldValues>(
   error: unknown,
-  setError?: UseFormSetError<T>
+  setError?: UseFormSetError<T>,
+  // POST /api/auth/login also 401s on a wrong email/password — there's no
+  // session to expire there, and the backend's own message ("Invalid email
+  // or password") is more useful than the generic one below. Every other
+  // call site is an authenticated action, where 401 does mean a dead token.
+  options?: { sessionExpiredOn401?: boolean }
 ) {
+  const sessionExpiredOn401 = options?.sessionExpiredOn401 ?? true
+
   if (!(error instanceof ApiRequestError)) {
     showError("Network error. Check your connection and try again.")
     return
   }
 
-  if (error.status === 401) {
+  if (error.status === 401 && sessionExpiredOn401) {
     // Clear the stale session but don't force-navigate: this fires for a
     // passive background check (AuthHydrator) on public pages too, where a
     // redirect would yank the user off a page they're allowed to be on.

@@ -44,7 +44,7 @@ export function LoginForm() {
       showSuccess(`Welcome back, ${user.name.split(" ")[0]}.`)
       router.push(searchParams.get("redirect") || `/dashboard/${user.role.toLowerCase()}`)
     } catch (error) {
-      handleApiError(error, form.setError)
+      handleApiError(error, form.setError, { sessionExpiredOn401: false })
     } finally {
       setSubmitting(false)
     }
