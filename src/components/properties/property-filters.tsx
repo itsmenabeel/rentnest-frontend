@@ -89,6 +89,10 @@ export function PropertyFiltersBar({
         onValueChange={(value) =>
           onChange({ categoryId: value === "all" ? undefined : (value ?? undefined) })
         }
+        items={{
+          all: "All property types",
+          ...Object.fromEntries(categories.map((c) => [c.id, c.name])),
+        }}
       >
         <SelectTrigger aria-label="Filter by property type" className="sm:w-44">
           <SelectValue placeholder="Property type" />

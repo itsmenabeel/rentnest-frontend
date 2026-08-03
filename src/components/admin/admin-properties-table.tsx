@@ -86,6 +86,10 @@ export function AdminPropertiesTable({
               categoryId: value === "all" ? undefined : (value ?? undefined),
             })
           }
+          items={{
+            all: "All categories",
+            ...Object.fromEntries(categories.map((c) => [c.id, c.name])),
+          }}
         >
           <SelectTrigger aria-label="Filter by category" className="w-44">
             <SelectValue placeholder="Category" />
@@ -111,6 +115,7 @@ export function AdminPropertiesTable({
               isAvailable: value === "all" ? undefined : value === "true",
             })
           }
+          items={{ all: "All listings", true: "Available", false: "Unavailable" }}
         >
           <SelectTrigger aria-label="Filter by availability" className="w-44">
             <SelectValue placeholder="Availability" />

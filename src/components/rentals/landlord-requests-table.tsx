@@ -150,6 +150,7 @@ export function LandlordRequestsTable({
               value === "all" ? undefined : (value as RentalRequestStatus),
           })
         }
+        items={STATUS_OPTIONS}
       >
         <SelectTrigger aria-label="Filter by status" className="w-44">
           <SelectValue placeholder="Status" />

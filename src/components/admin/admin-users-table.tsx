@@ -135,6 +135,7 @@ export function AdminUsersTable({
           onValueChange={(value) =>
             updateFilters({ role: value === "all" ? undefined : (value as Role) })
           }
+          items={ROLE_OPTIONS}
         >
           <SelectTrigger aria-label="Filter by role" className="w-40">
             <SelectValue placeholder="Role" />
@@ -155,6 +156,7 @@ export function AdminUsersTable({
               status: value === "all" ? undefined : (value as UserStatus),
             })
           }
+          items={STATUS_OPTIONS}
         >
           <SelectTrigger aria-label="Filter by status" className="w-40">
             <SelectValue placeholder="Status" />
