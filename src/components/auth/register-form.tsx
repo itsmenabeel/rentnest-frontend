@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsIndicator, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export function RegisterForm() {
   const router = useRouter()
@@ -89,6 +89,7 @@ export function RegisterForm() {
                     <TabsTrigger value="LANDLORD">
                       I&apos;m a Landlord
                     </TabsTrigger>
+                    <TabsIndicator />
                   </TabsList>
                 </Tabs>
               </FormItem>
